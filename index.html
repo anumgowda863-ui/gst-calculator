@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KarNivesh — GST Invoice Calculator</title>
+  <meta name="description" content="Free GST Invoice Calculator by KarNivesh — compute CGST, SGST, IGST and download a ready invoice instantly." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Animated background particles -->
+  <div class="bg-canvas" aria-hidden="true">
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+    <div class="particle p5"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <div class="logo-mark">
+          <span class="logo-rupee">₹</span>
+          <div class="logo-ping"></div>
+        </div>
+        <div class="logo-text-wrap">
+          <span class="logo-text">Kar<em>Nivesh</em></span>
+          <span class="logo-tagline">GST Suite</span>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="badge badge-free">Free Tool</span>
+        <span class="badge badge-secure">🔒 No Data Stored</span>
+        <button class="theme-toggle" id="theme-toggle" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">
+          <span class="theme-icon theme-icon-sun">☀️</span>
+          <span class="theme-icon theme-icon-moon">🌙</span>
+          <span class="theme-toggle-knob"></span>
+        </button>
+      </div>
+    </div>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-dot"></span>
+          Made for Indian Businesses
+        </div>
+        <h1 class="hero-title">
+          GST &amp; Invoice
+          <span class="hero-title-accent">Calculator</span>
+        </h1>
+        <p class="hero-sub">Enter your items, choose a GST slab, and instantly see CGST, SGST &amp; IGST — plus a professional printable invoice.</p>
+        <div class="hero-pills">
+          <div class="pill">✓ CGST / SGST</div>
+          <div class="pill">✓ IGST</div>
+          <div class="pill">✓ Printable Invoice</div>
+          <div class="pill">✓ Discount Support</div>
+          <div class="pill">✓ HSN/SAC Codes</div>
+          <div class="pill">✓ Auto-Save Draft</div>
+          <div class="pill">✓ Dark Mode</div>
+          <div class="pill">✓ Logo Upload</div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="gst-card gst-card-1">
+          <div class="gst-card-label">CGST</div>
+          <div class="gst-card-val">9%</div>
+        </div>
+        <div class="gst-card gst-card-2">
+          <div class="gst-card-label">SGST</div>
+          <div class="gst-card-val">9%</div>
+        </div>
+        <div class="gst-card gst-card-3">
+          <div class="gst-card-label">IGST</div>
+          <div class="gst-card-val">18%</div>
+        </div>
+        <div class="gst-orbit"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN TOOL -->
+  <main class="container tool-grid">
+
+    <!-- LEFT: INPUT PANEL -->
+    <section class="panel panel-input reveal-left">
+      <div class="panel-header">
+        <div class="panel-icon">📋</div>
+        <h2 class="panel-title">Invoice Details</h2>
+        <div class="panel-header-actions">
+          <span class="draft-status" id="draft-status">All changes saved</span>
+          <button class="btn-icon-sm" id="btn-clear-form" type="button" title="Clear form">🗑️</button>
+        </div>
+      </div>
+
+      <!-- Business Info -->
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">
+          <span class="legend-num">01</span> Your Business
+        </legend>
+        <div class="logo-upload-row">
+          <div class="logo-preview" id="logo-preview">
+            <span id="logo-placeholder">🏢</span>
+            <img id="logo-img" alt="Business logo" hidden />
+          </div>
+          <div class="logo-upload-actions">
+            <label class="btn-upload" for="biz-logo">Upload Logo</label>
+            <input type="file" id="biz-logo" accept="image/*" hidden />
+            <button class="btn-remove-logo" id="btn-remove-logo" type="button" hidden>Remove</button>
+          </div>
+        </div>
+        <div class="field-row">
+          <label for="biz-name">Business Name</label>
+          <input type="text" id="biz-name" placeholder="Acme Traders Pvt. Ltd." />
+        </div>
+        <div class="field-row">
+          <label for="biz-gstin">GSTIN</label>
+          <input type="text" id="biz-gstin" placeholder="22AAAAA0000A1Z5" maxlength="15" />
+        </div>
+        <div class="field-row">
+          <label for="biz-address">Address</label>
+          <textarea id="biz-address" rows="2" placeholder="123, MG Road, Pune – 411001"></textarea>
+        </div>
+      </fieldset>
+
+      <!-- Client Info -->
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">
+          <span class="legend-num">02</span> Bill To
+        </legend>
+        <div class="field-row">
+          <label for="client-name">Client Name</label>
+          <input type="text" id="client-name" placeholder="XYZ Corp." />
+        </div>
+        <div class="field-row">
+          <label for="client-gstin">Client GSTIN <span class="optional">(optional)</span></label>
+          <input type="text" id="client-gstin" placeholder="27BBBBB1111B1Z3" maxlength="15" />
+        </div>
+        <div class="field-grid">
+          <div class="field-row">
+            <label for="invoice-date">Invoice Date</label>
+            <input type="date" id="invoice-date" />
+          </div>
+          <div class="field-row">
+            <label for="invoice-no">Invoice No.</label>
+            <input type="text" id="invoice-no" placeholder="INV-001" />
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Transaction Type -->
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">
+          <span class="legend-num">03</span> Transaction Type
+        </legend>
+        <div class="radio-group">
+          <label class="radio-card" id="radio-intra-label">
+            <input type="radio" name="txn-type" value="intra" checked />
+            <div class="radio-card-inner">
+              <div class="radio-card-icon">🏙️</div>
+              <div>
+                <div class="radio-card-title">Intra-state</div>
+                <div class="radio-card-sub">CGST + SGST applies</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card" id="radio-inter-label">
+            <input type="radio" name="txn-type" value="inter" />
+            <div class="radio-card-inner">
+              <div class="radio-card-icon">🌏</div>
+              <div>
+                <div class="radio-card-title">Inter-state</div>
+                <div class="radio-card-sub">IGST applies</div>
+              </div>
+            </div>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Line Items -->
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">
+          <span class="legend-num">04</span> Line Items
+        </legend>
+        <div class="preset-chips" id="preset-chips">
+          <span class="preset-chip-label">Quick add:</span>
+          <button class="preset-chip" type="button" data-desc="Consulting Services" data-gst="18">Consulting · 18%</button>
+          <button class="preset-chip" type="button" data-desc="Software License" data-gst="18">Software · 18%</button>
+          <button class="preset-chip" type="button" data-desc="Web Design" data-gst="18">Web Design · 18%</button>
+          <button class="preset-chip" type="button" data-desc="Stationery" data-gst="12">Stationery · 12%</button>
+          <button class="preset-chip" type="button" data-desc="Packaged Food Item" data-gst="5">Food Item · 5%</button>
+        </div>
+        <div class="items-table-wrap">
+          <table class="items-table" id="items-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>HSN/SAC</th>
+                <th>Qty</th>
+                <th>Rate (₹)</th>
+                <th>GST %</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="items-body"></tbody>
+          </table>
+        </div>
+        <button class="btn-add-row" id="btn-add-row" type="button">
+          <span class="btn-add-icon">+</span> Add Item
+        </button>
+      </fieldset>
+
+      <!-- Discount -->
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">
+          <span class="legend-num">05</span> Discount &amp; Rounding
+        </legend>
+        <div class="field-row field-inline">
+          <div>
+            <label for="discount-val">Amount</label>
+            <input type="number" id="discount-val" placeholder="0" min="0" />
+          </div>
+          <div>
+            <label for="discount-type">Type</label>
+            <select id="discount-type">
+              <option value="flat">Flat (₹)</option>
+              <option value="percent">Percent (%)</option>
+            </select>
+          </div>
+        </div>
+        <label class="switch-row">
+          <span>Round off grand total</span>
+          <span class="switch">
+            <input type="checkbox" id="round-off" checked />
+            <span class="switch-slider"></span>
+          </span>
+        </label>
+      </fieldset>
+
+      <!-- Bank Details -->
+      <fieldset class="fieldset fieldset-collapsible">
+        <legend class="fieldset-legend fieldset-legend-toggle" data-target="bank-body">
+          <span class="legend-num">06</span> Bank Details <span class="optional">(optional)</span>
+          <span class="legend-chevron">▾</span>
+        </legend>
+        <div class="fieldset-body" id="bank-body" hidden>
+          <div class="field-grid">
+            <div class="field-row">
+              <label for="bank-name">Bank Name</label>
+              <input type="text" id="bank-name" placeholder="HDFC Bank" />
+            </div>
+            <div class="field-row">
+              <label for="bank-acc">Account No.</label>
+              <input type="text" id="bank-acc" placeholder="0123456789" />
+            </div>
+          </div>
+          <div class="field-grid">
+            <div class="field-row">
+              <label for="bank-ifsc">IFSC Code</label>
+              <input type="text" id="bank-ifsc" placeholder="HDFC0001234" />
+            </div>
+            <div class="field-row">
+              <label for="bank-upi">UPI ID</label>
+              <input type="text" id="bank-upi" placeholder="business@upi" />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Notes / Terms -->
+      <fieldset class="fieldset fieldset-collapsible">
+        <legend class="fieldset-legend fieldset-legend-toggle" data-target="notes-body">
+          <span class="legend-num">07</span> Notes &amp; Terms <span class="optional">(optional)</span>
+          <span class="legend-chevron">▾</span>
+        </legend>
+        <div class="fieldset-body" id="notes-body" hidden>
+          <div class="field-row">
+            <textarea id="invoice-notes" rows="2" placeholder="Thank you for your business!"></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <button class="btn-calculate" id="btn-calculate" type="button">
+        <span class="btn-calc-text">Calculate GST</span>
+        <span class="btn-calc-icon">→</span>
+      </button>
+      <p class="kbd-hint">Tip: press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to calculate anytime</p>
+    </section>
+
+    <!-- RIGHT: OUTPUT PANEL -->
+    <section class="panel panel-output reveal-right" id="output-panel">
+      <div class="panel-header">
+        <div class="panel-icon">🧾</div>
+        <h2 class="panel-title">Summary &amp; Preview</h2>
+      </div>
+
+      <div class="summary-empty" id="summary-empty">
+        <div class="empty-illustration">
+          <div class="empty-circle c1"></div>
+          <div class="empty-circle c2"></div>
+          <div class="empty-circle c3"></div>
+          <div class="empty-icon-wrap">
+            <span class="empty-icon">🧾</span>
+          </div>
+        </div>
+        <h3 class="empty-title">Ready to Calculate</h3>
+        <p>Fill in your invoice details and click <strong>Calculate GST</strong> to see the full breakdown here.</p>
+      </div>
+
+      <div class="summary-content" id="summary-content" hidden>
+
+        <!-- GST Breakdown -->
+        <div class="breakdown-card" id="breakdown-card">
+          <div class="breakdown-header">
+            <h3 class="breakdown-title">GST Breakdown</h3>
+            <div class="breakdown-badge" id="breakdown-badge">Intra-state</div>
+          </div>
+          <div class="breakdown-table-wrap">
+            <table class="breakdown-table" id="breakdown-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Taxable</th>
+                  <th class="col-cgst">CGST</th>
+                  <th class="col-sgst">SGST</th>
+                  <th class="col-igst">IGST</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="breakdown-body"></tbody>
+              <tfoot id="breakdown-foot"></tfoot>
+            </table>
+          </div>
+        </div>
+
+        <!-- Totals -->
+        <div class="totals-block" id="totals-block"></div>
+
+        <!-- Invoice Preview -->
+        <div class="invoice-preview" id="invoice-preview"></div>
+
+        <!-- Actions -->
+        <div class="action-row">
+          <button class="btn-action btn-print" id="btn-print" type="button">
+            <span>🖨️</span> Print / Save PDF
+          </button>
+          <button class="btn-action btn-copy" id="btn-copy" type="button">
+            <span>📋</span> Copy Summary
+          </button>
+          <button class="btn-action btn-csv" id="btn-csv" type="button">
+            <span>⬇️</span> Export CSV
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating calculate button (mobile) -->
+  <button class="fab-calculate" id="fab-calculate" type="button" aria-label="Calculate GST">🧮</button>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="logo-mark logo-mark-sm">
+          <span class="logo-rupee">₹</span>
+        </div>
+        <div>
+          <div class="footer-name">KarNivesh</div>
+          <div class="footer-tagline">Free GST tools for Indian entrepreneurs</div>
+        </div>
+      </div>
+      <p class="footer-copy">No data stored · No account needed · 100% free</p>
+    </div>
+  </footer>
+
+  <!-- Confetti canvas -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
